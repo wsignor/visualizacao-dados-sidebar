@@ -84,12 +84,19 @@
         }
 
         .chart div {
-            font: 10px sans-serif;
+            font: 11px sans-serif;
             background-color: steelblue;
-            text-align: right;
+            text-align: left;
             padding: 3px;
             margin: 1px;
             color: white;
+        }
+
+        select {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 2px 10px;
+            width: 300px;
         }
     </style>
 </head>
@@ -117,14 +124,15 @@
                     <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
 
+                <p><h3>Escolha um parlamentar:</h3></p>
                 <p>
-                <h3><select id="parlamentares-select" onchange="initMap(this.value,null)">
-            </select></h3>
+                <h4><select id="parlamentares-select" onchange="initMap(this.value,document.getElementsByName('fader').value)">
+            </select></h4>
                 </p>
 
 
                 <p>
-                <h3><label for="fader">Ano de </label>
+                <h3><label for="fader">Ano selecionado: </label>
                 <span id="range">2017</span></h3>
                 </p>
                 <p>
@@ -142,12 +150,16 @@
                 <script type="text/javascript">
                     function showValue(newValue) {
                         document.getElementById("range").innerHTML = newValue.value;
+                        document.getElementById("ano-again").innerHTML = newValue.value;
                     }
                 </script>
 
 
                 <p>
-                <h3>Ranking dos políticos que mais gastaram no ano selecionado</h3>
+                    <h3>
+                        <label>Parlamentares que mais gastaram em </label>
+                        <span id="ano-again">2017</span>
+                    </h3>
                 </p>
 
                 <div class="chart"></div>
@@ -304,7 +316,8 @@
                 {ano: "2017", source: ranking2017}]
 
             for (index in listYears) {
-                if (listYears[index].ano == selectedYear) {
+                if (listYears[index].ano == document.getElementById('fader').value) {
+                    console.log("year selected: " + document.getElementById('fader').value);
                     dataSelect = listYears[index].source;
                 }
             }
@@ -321,9 +334,9 @@
                 .data(dataSelect)
                 .enter().append("div")
                 .style("width", function (d) {
-                    if (selectedYear == "2017") {
+                    if (document.getElementById('fader').value == "2017") {
                         return d.grana / 300 + "px";
-                    } else if (selectedYear == "2014")  {
+                    } else if (document.getElementById('fader').value == "2014")  {
                         return d.grana / 1400 + "px";
                     } else {
                         return d.grana / 1700 + "px";
